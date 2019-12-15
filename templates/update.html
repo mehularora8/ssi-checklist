@@ -1,0 +1,18 @@
+{% extends 'skeleton.html' %}
+
+{% block title %}
+<title> Checclist</title>
+{% endblock %}
+
+{% block body %}
+
+<div class = "table">
+	<h1> Update Task </h1>
+
+	<form action = '/update/{{ task.id }}' method = "POST">
+		<input type = "text" name = "task" id = "task" value = "{{ task.content }}"> </input>
+		<input type = "submit" value = "Update"> </input> 
+	</form>
+</div>
+
+{% endblock %}

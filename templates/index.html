@@ -1,0 +1,38 @@
+{% extends 'skeleton.html' %}
+
+{% block title %}
+<title> Checclist</title>
+{% endblock %}
+
+{% block body %}
+
+<div class = "table">
+	<h1> Checklist </h1>
+	<table>
+		<tr>
+			<th> Task </th>
+			<th> Added </th>
+			<th> Actions </th>
+		</tr>
+		{% for task in tasks %}
+			<tr>
+				<td> {{ task.content }}</td>
+				<td> {{ task.date_created }}</td>
+				<td>
+					<a href="/delete/{{ task.id }}"> Delete </a>
+					<br>
+					<a href="/update/{{ task.id }}"> Update </a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<form action = '/' method = "POST">
+		<input type = "text" name = "task" id = "task"> </input>
+		<input type = "submit" value = "Add Task"> </input>
+	</form>
+	<form action = '/gethc'>
+		<input type = "submit" value = "Print to File"> </input>
+	</form>
+</div>
+
+{% endblock %}
