@@ -1,2 +1,2 @@
 # ssi-checklist
-Simple checklist web platform linked to a SQLite database written in Flask
+Checklist web platform linked to a SQLite database written in Flask with added features
