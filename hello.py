@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///nextiter.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 db = SQLAlchemy(app)
 
 class checklist(db.Model):
@@ -11,6 +11,8 @@ class checklist(db.Model):
     content = db.Column(db.String(200), nullable = False)
     assigned_to = db.Column(db.String(50), nullable = False)
     date_created = db.Column(db.DateTime, default = datetime.utcnow)
+    person_completing = db.Column(db.String(50))
+    completed = db.Column(db.Boolean, default = False)
 
     def __repr__(self):
         return str(self.__dict__)
@@ -33,17 +35,34 @@ def index():
 		tasks = checklist.query.all()
 		return render_template('index.html', tasks = tasks)
 
-@app.route('/delete/<int:id>')
-def delete_task(id):
-	task_to_delete = checklist.query.get_or_404(id)
+@app.route('/complete/<int:id>')
+def complete(id):
+	task = checklist.query.get_or_404(id)
+	return render_template('person_completing.html', task = task)
 
-	try:
-		db.session.delete(task_to_delete)
-		db.session.commit()
+@app.route('/completing/<int:id>', methods = ["POST"])
+def completing(id):
+	task_to_complete = checklist.query.get_or_404(id)
+
+	if request.method == 'POST':
+		task_to_complete.person_completing = request.form['pc']
+		task_to_complete.completed = True
+		with open("completed.txt", "a") as f:
+			f.write("Task: " + task_to_complete.content + ", Completed by: " + task_to_complete.person_completing + "\n")
+		f.close()
+
+		try: 
+			db.session.commit()
+
+		except:
+			return "Internal error"
+		
 		return redirect('/')
 
-	except:
-		return "Internal Failure"
+
+	else:
+		return render_template('person_completing.html', task = task_to_complete)
+
 
 @app.route('/update/<int:id>', methods = ["GET", "POST"])
 def update(id):
@@ -68,11 +87,38 @@ def write():
 	tasks = checklist.query.all()
 	with open("checklist.txt", "w") as f:
 		for task in tasks:
-			f.write(task.__repr__())
+			f.write("Task: " + task.content + ", Assigned to: " + task.assigned_to)
 			f.write('\n')
 
 	f.close()
 	return redirect('/')
+
+@app.route('/delete/<int:id>')
+def delete(id):
+	task_to_delete = checklist.query.get_or_404(id)
+	
+	try:
+		db.session.delete(task_to_delete)
+		db.session.commit()
+	except: 
+		return "Internal error"
+
+	return redirect('/')
+
+@app.route('/clear')
+def clear():
+	tasks = checklist.query.all()
+	for task in tasks:
+		db.session.delete(task)
+		db.session.commit()
+
+	return redirect('/')
+
+@app.route('/cleartxtfiles')
+def cleartxtfiles():
+	open("checklist.txt", "w").close()
+	open("completed.txt", "w").close()
+	return redirect('/clear')
 
 if __name__ == "__main__":
 	app.run(debug = True)

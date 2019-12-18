@@ -1,0 +1,19 @@
+{% extends 'skeleton.html' %}
+
+{% block title %}
+<title> Complete task</title>
+{% endblock %}
+
+{% block body %}
+
+<div class = "table">
+	<h1> Mark Task Complete </h1>
+
+	<form action = '/completing/{{ task.id }}' method = "POST" id = "marking_complete">
+		Please enter your name. The task will be marked complete under your name. <br> <br>
+		<input type = "text" name = "pc" id = "pc" autocomplete = "off" required> </input>
+		<input type = "submit" value = "Mark Complete"> </input> 
+	</form>
+</div>
+
+{% endblock %}

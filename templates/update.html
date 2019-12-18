@@ -1,7 +1,7 @@
 {% extends 'skeleton.html' %}
 
 {% block title %}
-<title> Checclist</title>
+<title> Update task</title>
 {% endblock %}
 
 {% block body %}
@@ -9,9 +9,9 @@
 <div class = "table">
 	<h1> Update Task </h1>
 
-	<form action = '/update/{{ task.id }}' method = "POST">
-		<input type = "text" name = "task" id = "task" value = "{{ task.content }}"> </input>
-		<input type = "text" name = "assigned" id = "assigned" value = "{{ task.assigned_to }}"> </input>
+	<form action = '/update/{{ task.id }}' method = "POST" id = "marking_complete">
+		<input type = "text" name = "task" id = "task" value = "{{ task.content }}" autocomplete="off"> </input>
+		<input type = "text" name = "assigned" id = "assigned" value = "{{ task.assigned_to }}" autocomplete="off"> </input>
 		<input type = "submit" value = "Update"> </input> 
 	</form>
 </div>

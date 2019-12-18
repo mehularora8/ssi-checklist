@@ -8,11 +8,15 @@
 
 <div class = "table">
 	<h1> Checklist </h1>
+	<h3> Use Print to file to get a list of all tasks currently in the table for future records. Tasks are also printed to a separate text file once you mark them complete.</h3>
+	{% if tasks|length >= 1 %}
 	<table>
 		<tr>
 			<th> Task </th>
 			<th> Assigned to </th>
 			<th> Added </th>
+			<th> Completed </th>
+			<th> Completed By </th>
 			<th> Actions </th>
 		</tr>
 		{% for task in tasks %}
@@ -20,21 +24,40 @@
 				<td> {{ task.content }}</td>
 				<td> {{ task.assigned_to }}</td>
 				<td> {{ task.date_created }}</td>
+				<td> {{ task.completed }}</td>
+				<td> {{ task.person_completing }}</td>
 				<td>
-					<a href="/delete/{{ task.id }}"> Delete </a>
+					{% if task.completed == False %}
+					<a href="/complete/{{ task.id }}"> Mark complete </a>
 					<br>
 					<a href="/update/{{ task.id }}"> Update </a>
+					<br>
+					<a href="/delete/{{ task.id }}"> Delete Task </a>
+
+					{% else %}
+					<a href="/delete/{{ task.id }}"> Delete Task </a>
+					{% endif %}
 				</td>
 			</tr>
 		{% endfor %}
 	</table>
+	{% else %}
+		<h4>Nothing to do? Impossible. Perhaps the archives are incomplete.</h4>
+	{% endif %}
+	<br><br>
 	<form action = '/' method = "POST">
-		Task: <input type = "text" name = "task" id = "task"> </input> <br>
-		Person in-charge: <input type = "text" name = "assigned" id = "assigned"> </input> <br>
+		Task: <input type = "text" name = "task" id = "task" autocomplete="off"> </input> <br>
+		Person in-charge: <input type = "text" name = "assigned" id = "assigned" autocomplete="off"> </input> <br>
 		<input type = "submit" value = "Add Task"> </input>
-	</form>
+	</form> <br>
 	<form action = '/gethc'>
 		<input type = "submit" value = "Print to File"> </input>
+	</form><br>
+	<form action = '/clear'>
+		<input type = "submit" value = "Clear checklist"> </input>
+	</form><br>
+	<form action = '/cleartxtfiles'>
+		<input type = "submit" value = "Start checklist for new launch"> </input>
 	</form>
 </div>
 

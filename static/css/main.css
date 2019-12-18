@@ -1,12 +1,29 @@
 
 body, html {
     margin: 0;
-    font-family: "Roboto", sans-serif;
+    font-family: "Open Sans", sans-serif;
+    overflow-x: hidden;
+}
+
+#header{
+	height: 8vh;
+	width: 100vw;
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+}
+
+#logo{
+	display: inline-block;
+	width: 8vh;
+	height: 8vh;
+	background: url(https://s3-us-west-1.amazonaws.com/habmc/assets/Logo_BlackSubText.png);
+	background-size: contain;
 }
 
 .table {
     margin: 0 auto;
-    width: 400px;
+    width: 80vw;
 }
 
 table, td, th {
@@ -27,11 +44,14 @@ td {
     padding: 5px;
 }
 
-h1{
+h1, h4, h3{
 	text-align: center;
 }
 
 form{
 	text-align: right;
-	margin-top: 50px;
+}
+
+#marking_complete{
+	text-align: center;
 }
