@@ -33,3 +33,5 @@ instance/
 
 # pyenv
 .python-version
+
+.DS_store
